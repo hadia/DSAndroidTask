@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadia.task.mservices.dsandroidtask
+package com.hadia.task.mservices.dsandroidtask.ui.albums
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hadia.task.mservices.dsandroidtask.R
 import com.hadia.task.mservices.dsandroidtask.data.model.toAlbum
 import com.hadia.task.mservices.dsandroidtask.domain.model.Album
 import com.hadia.task.mservices.dsandroidtask.domain.model.DataProvider
@@ -90,7 +91,7 @@ private fun ListenerLayout(albumUIModel: Album) {
     ) {
         Image(
             painter = painterResource(R.drawable.ic_listenericon),
-            contentDescription = "Contact profile picture",
+            contentDescription = null,
             modifier = Modifier.padding(
                 start = 5.dp,
                 end = 1.dp, top = 5.dp
