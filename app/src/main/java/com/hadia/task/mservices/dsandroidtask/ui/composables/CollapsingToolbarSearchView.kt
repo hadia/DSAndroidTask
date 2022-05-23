@@ -14,23 +14,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hadia.task.mservices.dsandroidtask.R
 import com.hadia.task.mservices.dsandroidtask.ui.theme.Black94
 import com.hadia.task.mservices.dsandroidtask.ui.theme.Grey24
 import me.onebone.toolbar.*
 
 @Composable
-fun SearchView(
+fun CollapsingToolbarSearchView(
     title: String,
+    placeholderText: String = stringResource(R.string.search),
     textState: MutableState<TextFieldValue>,
-    state: CollapsingToolbarScaffoldState,
+    collapsingToolbarState: CollapsingToolbarScaffoldState,
 ) {
-    val progress = state.toolbarState.progress // how much the toolbar is expanded (0: collapsed, 1: expanded)
+    val progress = collapsingToolbarState.toolbarState.progress // how much the toolbar is expanded (0: collapsed, 1: expanded)
     val textSize = (18 + (34 - 18) * progress).sp
 
     TextField(
@@ -38,12 +41,14 @@ fun SearchView(
         onValueChange = { value ->
             textState.value = value
         },
+        placeholder = {
+            Text(text = placeholderText)
+        },
         modifier =
         Modifier
             .background(Black94)
             .padding(16.dp, 100.dp, 16.dp, 16.dp)
             .fillMaxWidth()
-            .height(36.dp)
             .graphicsLayer {
                 // change alpha of Image as the toolbar expands
                 alpha = progress
@@ -115,5 +120,5 @@ fun SearchView(
 fun PreviewAlbumUIModelItem() {
     val textState = remember { mutableStateOf(TextFieldValue("")) }
     val state = rememberCollapsingToolbarScaffoldState()
-    SearchView("Discover", textState, state)
+    CollapsingToolbarSearchView("Discover", "Search", textState, state)
 }
