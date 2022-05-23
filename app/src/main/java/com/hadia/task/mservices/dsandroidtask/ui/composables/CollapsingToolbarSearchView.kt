@@ -41,7 +41,7 @@ fun SearchView(
         modifier =
         Modifier
             .background(Black94)
-            .padding(16.dp, 106.dp, 16.dp, 16.dp)
+            .padding(16.dp, 100.dp, 16.dp, 16.dp)
             .fillMaxWidth()
             .height(36.dp)
             .graphicsLayer {

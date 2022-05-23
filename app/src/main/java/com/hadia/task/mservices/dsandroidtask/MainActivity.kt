@@ -55,7 +55,7 @@ fun MyApp(vm: MainViewModel) {
             .padding(0.dp, 40.dp, 0.dp, 0.dp),
         state = state,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
-        toolbarModifier = Modifier.background(MaterialTheme.colorScheme.primary),
+        toolbarModifier = Modifier.background(Black94),
         enabled = enabled,
         toolbar = {
             SearchView(stringResource(R.string.discover), textState, state)
