@@ -2,7 +2,7 @@ package com.hadia.task.mservices.dsandroidtask.domain.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.hadia.task.mservices.dsandroidtask.data.model.remote.AlbumsDataSource
+import com.hadia.task.mservices.dsandroidtask.data.model.remote.network.AlbumsDataSource
 import com.hadia.task.mservices.dsandroidtask.domain.model.Album
 import kotlinx.coroutines.delay
 import javax.inject.Inject
