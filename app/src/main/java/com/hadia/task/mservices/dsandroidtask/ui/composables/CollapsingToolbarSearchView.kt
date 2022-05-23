@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hadia.task.mservices.dsandroidtask.ui.theme.Black94
 import com.hadia.task.mservices.dsandroidtask.ui.theme.Grey24
 import me.onebone.toolbar.*
 
@@ -39,7 +40,7 @@ fun SearchView(
         },
         modifier =
         Modifier
-            .background(Color.Black)
+            .background(Black94)
             .padding(16.dp, 106.dp, 16.dp, 16.dp)
             .fillMaxWidth()
             .height(36.dp)
