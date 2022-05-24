@@ -76,19 +76,16 @@ fun CollapsingToolbarSearchView(
                 .focusRequester(focusRequester),
             textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
             leadingIcon = {
-                if (!isLoading) {
-                    Icon(
-                        Icons.Default.Search,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .padding(7.dp)
-                            .size(24.dp)
-                            .graphicsLayer {
-                                alpha = if (isLoading) 0f else 1f
-                            }
-                    )
-                } else {
-                }
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(7.dp)
+                        .size(24.dp)
+                        .graphicsLayer {
+                            alpha = if (isLoading) 0f else 1f
+                        }
+                )
             },
             trailingIcon = {
                 AnimatedVisibility(
