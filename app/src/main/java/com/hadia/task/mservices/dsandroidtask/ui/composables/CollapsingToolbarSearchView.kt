@@ -1,22 +1,30 @@
 package com.hadia.task.mservices.dsandroidtask.ui.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,72 +34,109 @@ import com.hadia.task.mservices.dsandroidtask.ui.theme.Black94
 import com.hadia.task.mservices.dsandroidtask.ui.theme.Grey24
 import me.onebone.toolbar.*
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CollapsingToolbarSearchView(
     title: String,
+    searchText: String,
+    onSearchTextChanged: (String) -> Unit = {},
     placeholderText: String = stringResource(R.string.search),
-    textState: MutableState<TextFieldValue>,
+    onClearClick: () -> Unit = {},
+    isLoading: Boolean,
     collapsingToolbarState: CollapsingToolbarScaffoldState,
 ) {
     val progress = collapsingToolbarState.toolbarState.progress // how much the toolbar is expanded (0: collapsed, 1: expanded)
     val textSize = (18 + (34 - 18) * progress).sp
+    var showClearButton by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
 
-    TextField(
-        value = textState.value,
-        onValueChange = { value ->
-            textState.value = value
-        },
-        placeholder = {
-            Text(text = placeholderText)
-        },
-        modifier =
-        Modifier
+    Box(
+        modifier = Modifier.padding(16.dp, 100.dp, 16.dp, 16.dp)
             .background(Black94)
-            .padding(16.dp, 100.dp, 16.dp, 16.dp)
             .fillMaxWidth()
-            .graphicsLayer {
-                // change alpha of Image as the toolbar expands
-                alpha = progress
+    ) {
+
+        TextField(
+            value = searchText,
+            onValueChange = onSearchTextChanged,
+            placeholder = {
+                Text(text = placeholderText)
             },
-        textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
-        leadingIcon = {
-            Icon(
-                Icons.Default.Search,
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(24.dp)
-            )
-        },
-        trailingIcon = {
-            if (textState.value != TextFieldValue("")) {
-                IconButton(
-                    onClick = {
-                        textState.value =
-                            TextFieldValue("") // Remove text from TextField when you press the 'X' icon
-                    }
-                ) {
+            modifier =
+            Modifier
+                .background(Black94)
+                .fillMaxWidth()
+                .graphicsLayer {
+                    alpha = progress
+                }
+                .onFocusChanged { focusState ->
+                    showClearButton = (focusState.isFocused)
+                }
+                .focusRequester(focusRequester),
+            textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
+            leadingIcon = {
+                if (!isLoading) {
                     Icon(
-                        Icons.Default.Close,
+                        Icons.Default.Search,
                         contentDescription = "",
                         modifier = Modifier
                             .padding(7.dp)
                             .size(24.dp)
+                            .graphicsLayer {
+                                alpha = if (isLoading) 0f else 1f
+                            }
                     )
+                } else {
                 }
-            }
-        },
-        singleLine = true,
-        shape = RoundedCornerShape(10.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.White,
-            cursorColor = Color.White,
-            containerColor = Grey24,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
+            },
+            trailingIcon = {
+                AnimatedVisibility(
+                    visible = showClearButton,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    IconButton(onClick = {
+                        onClearClick()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .padding(7.dp)
+                                .size(24.dp)
+                        )
+                    }
+                }
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(10.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.White,
+                cursorColor = Color.White,
+                containerColor = Grey24,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {
+                keyboardController?.hide()
+            })
         )
-    )
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(4.dp)
+                .size(30.dp)
+                .graphicsLayer {
+                    alpha = if (!isLoading) 0f else 1f
+                }
+        ) {
+            CircularProgressIndicator()
+        }
+    }
 
     Text(
         text = title,
@@ -118,7 +163,14 @@ fun CollapsingToolbarSearchView(
 @Preview
 @Composable
 fun PreviewAlbumUIModelItem() {
-    val textState = remember { mutableStateOf(TextFieldValue("")) }
     val state = rememberCollapsingToolbarScaffoldState()
-    CollapsingToolbarSearchView("Discover", "Search", textState, state)
+
+    CollapsingToolbarSearchView(
+        title = "Discover", searchText = "",
+        placeholderText = "Search users",
+        onSearchTextChanged = { },
+        onClearClick = { },
+        isLoading = true,
+        collapsingToolbarState = state
+    )
 }
