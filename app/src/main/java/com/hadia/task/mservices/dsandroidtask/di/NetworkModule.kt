@@ -1,7 +1,7 @@
 package com.hadia.task.mservices.dsandroidtask.di
 
 import com.hadia.task.mservices.dsandroidtask.BuildConfig
-import com.hadia.task.mservices.dsandroidtask.data.model.remote.network.AlbumsService
+import com.hadia.task.mservices.dsandroidtask.data.remote.network.AlbumsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

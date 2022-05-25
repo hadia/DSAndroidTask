@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -43,9 +44,10 @@ fun AlbumContent(
     isSearchingListEmpty: Boolean = false,
     searchingList: Boolean = false
 ) {
+    Box(modifier = Modifier.fillMaxSize()) {
     when {
         lazyAlbumItems.loadState.refresh is LoadState.NotLoading -> {
-            Column(modifier = Modifier.fillMaxSize()) {
+
                 if (lazyAlbumItems.itemCount > 0) {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
@@ -61,6 +63,11 @@ fun AlbumContent(
                                 it?.let { it1 -> AlbumListItem(albumUIModel = it1) }
                             }
                         )
+
+                        if(lazyAlbumItems.loadState.append is LoadState.Loading)  {
+                            item { LoadingItem() }
+                            item { LoadingItem() }
+                    }
                     }
                 } else {
                     Box(modifier = Modifier.fillMaxSize()) {
@@ -75,16 +82,17 @@ fun AlbumContent(
                         )
                     }
                 }
-            }
+
         }
         lazyAlbumItems.loadState.prepend is LoadState.Loading -> {
-            LoadingView(modifier = Modifier.fillMaxSize())
+            Box(modifier = Modifier.fillMaxSize()) {
+                LoadingView(modifier = Modifier.fillMaxSize())
+            }
         }
         lazyAlbumItems.loadState.refresh is LoadState.Loading -> {
-            LoadingView(modifier = Modifier.fillMaxSize())
-        }
-        lazyAlbumItems.loadState.append is LoadState.Loading -> {
-            LoadingItem()
+            Box(modifier = Modifier.fillMaxSize()) {
+                LoadingView(modifier = Modifier.fillMaxSize())
+            }
         }
         lazyAlbumItems.loadState.refresh is LoadState.Error -> {
             val e = lazyAlbumItems.loadState.refresh as LoadState.Error
@@ -105,6 +113,7 @@ fun AlbumContent(
                 onClick = { lazyAlbumItems.retry() }
             )
         }
+    }
     }
 }
 

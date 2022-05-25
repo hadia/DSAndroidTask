@@ -1,4 +1,4 @@
-package com.hadia.task.mservices.dsandroidtask
+package com.hadia.task.mservices.dsandroidtask.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.hadia.task.mservices.dsandroidtask.ui.AlbumsSearchModelState
+import com.hadia.task.mservices.dsandroidtask.R
 import com.hadia.task.mservices.dsandroidtask.ui.albums.AlbumContent
 import com.hadia.task.mservices.dsandroidtask.ui.composables.CollapsingToolbarSearchView
 import com.hadia.task.mservices.dsandroidtask.ui.theme.AndroidTaskTheme
@@ -52,9 +52,7 @@ fun MyApp(vm: MainViewModel) {
     val enabled by remember { mutableStateOf(true) }
 
     val albumsSearchModelState by vm.albumsSearchModelState.collectAsState(initial = AlbumsSearchModelState.Empty)
-
     val albums by vm.albums.collectAsState()
-
     val lazyAlbumItems = albums.collectAsLazyPagingItems()
 
     CollapsingToolbarScaffold(
@@ -81,7 +79,7 @@ fun MyApp(vm: MainViewModel) {
         }, body = {
             AlbumContent(
                 lazyAlbumItems,
-                albumsSearchModelState.isSearchingListEmpty,
+                albumsSearchModelState.isSearchingResultListEmpty,
                 albumsSearchModelState.isSearching,
             )
         }

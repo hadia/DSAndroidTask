@@ -2,7 +2,8 @@ package com.hadia.task.mservices.dsandroidtask.domain.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.hadia.task.mservices.dsandroidtask.data.model.remote.network.AlbumsDataSource
+import com.hadia.task.mservices.dsandroidtask.data.model.toAlbum
+import com.hadia.task.mservices.dsandroidtask.data.remote.network.AlbumsDataSource
 import com.hadia.task.mservices.dsandroidtask.domain.model.Album
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -13,7 +14,7 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumsData
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Album> {
         return try {
             val nextPage = params.key ?: 1
-            val albums = dataSource.getAlbums()
+            val albums = dataSource.getAlbums().data?.sessions?.map { it.toAlbum() } ?: emptyList()
             delay(1000)
             LoadResult.Page(
                 data = albums,
