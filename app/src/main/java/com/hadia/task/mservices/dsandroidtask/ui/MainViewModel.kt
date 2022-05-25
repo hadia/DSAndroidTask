@@ -7,10 +7,8 @@ import com.hadia.task.mservices.dsandroidtask.domain.model.Album
 import com.hadia.task.mservices.dsandroidtask.domain.useCase.GetAlbums
 import com.hadia.task.mservices.dsandroidtask.domain.useCase.SearchAlbums
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +16,7 @@ class MainViewModel @Inject constructor(
     private val getAlbumsUseCase: GetAlbums,
     private val searchAlbumsUseCase: SearchAlbums
 ) : ViewModel() {
-    private val debouncePeriod: Long = 2000
+    private val debouncePeriod: Long = 500
 
     private val _searchText: MutableStateFlow<String> = MutableStateFlow("")
 
@@ -55,24 +53,28 @@ class MainViewModel @Inject constructor(
         )
     }
 
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     fun onSearchTextChanged(changedSearchText: String) {
         _searchText.value = changedSearchText
-        _isSearching.value = true
 
         if (changedSearchText.isEmpty()) {
             return
         }
 
-        viewModelScope.launch {
-            _showProgressBar.value = true
-            delay(debouncePeriod)
-            val result = searchAlbumsUseCase.invoke(changedSearchText)
-
-            _isSearchingListEmpty.value = result.first
-            _matchedAlbums.value = result.second
-
-            _showProgressBar.value = false
-        }
+        _matchedAlbums.value = _searchText.debounce(debouncePeriod)
+            .distinctUntilChanged()
+            .flatMapLatest {
+                searchAlbumsUseCase.invoke(
+                    changedSearchText,
+                    onStart = {
+                        _isSearching.value = true
+                        _showProgressBar.value = true
+                    },
+                    onComplete = { _showProgressBar.value = false },
+                    isSearchingResultsEmpty = { _isSearchingListEmpty.value = it },
+                    onError = { }
+                )
+            }
     }
 
     private fun <T> Flow<T>.stateInViewModel(initialValue: T): StateFlow<T> =

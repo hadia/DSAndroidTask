@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -16,5 +17,8 @@ class UseCaseModule {
     fun provideGetAlbums(repository: AlbumRepositoryImpl): GetAlbums = GetAlbums(repository)
 
     @Provides
-    fun provideSearchAlbums(repository: SearchAlbumRepository): SearchAlbums = SearchAlbums(repository)
+    fun provideSearchAlbums(
+        repository: SearchAlbumRepository,
+        coroutineDispatcher: CoroutineDispatcher
+    ): SearchAlbums = SearchAlbums(repository, coroutineDispatcher)
 }

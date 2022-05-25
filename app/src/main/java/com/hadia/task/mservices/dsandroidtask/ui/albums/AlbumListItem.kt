@@ -24,7 +24,6 @@ import com.hadia.task.mservices.dsandroidtask.data.model.toAlbum
 import com.hadia.task.mservices.dsandroidtask.domain.model.Album
 import com.hadia.task.mservices.dsandroidtask.domain.model.DataProvider
 import com.hadia.task.mservices.dsandroidtask.ui.theme.White45
-import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalMaterial3Api::class)

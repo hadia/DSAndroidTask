@@ -2,7 +2,6 @@ package com.hadia.task.mservices.dsandroidtask.ui.albums
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
@@ -45,8 +44,8 @@ fun AlbumContent(
     searchingList: Boolean = false
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-    when {
-        lazyAlbumItems.loadState.refresh is LoadState.NotLoading -> {
+        when {
+            lazyAlbumItems.loadState.refresh is LoadState.NotLoading -> {
 
                 if (lazyAlbumItems.itemCount > 0) {
                     LazyVerticalGrid(
@@ -64,10 +63,10 @@ fun AlbumContent(
                             }
                         )
 
-                        if(lazyAlbumItems.loadState.append is LoadState.Loading)  {
+                        if (lazyAlbumItems.loadState.append is LoadState.Loading) {
                             item { LoadingItem() }
                             item { LoadingItem() }
-                    }
+                        }
                     }
                 } else {
                     Box(modifier = Modifier.fillMaxSize()) {
@@ -82,38 +81,37 @@ fun AlbumContent(
                         )
                     }
                 }
+            }
+            lazyAlbumItems.loadState.prepend is LoadState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    LoadingView(modifier = Modifier.fillMaxSize())
+                }
+            }
+            lazyAlbumItems.loadState.refresh is LoadState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    LoadingView(modifier = Modifier.fillMaxSize())
+                }
+            }
+            lazyAlbumItems.loadState.refresh is LoadState.Error -> {
+                val e = lazyAlbumItems.loadState.refresh as LoadState.Error
 
-        }
-        lazyAlbumItems.loadState.prepend is LoadState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                LoadingView(modifier = Modifier.fillMaxSize())
+                ErrorItem(
+                    message = e.error.localizedMessage
+                        ?: stringResource(id = R.string.search),
+                    modifier = Modifier.fillMaxSize(),
+                    onClick = { lazyAlbumItems.retry() }
+                )
+            }
+            lazyAlbumItems.loadState.append is LoadState.Error -> {
+                val e = lazyAlbumItems.loadState.append as LoadState.Error
+
+                ErrorItem(
+                    message = e.error.localizedMessage
+                        ?: stringResource(id = R.string.search),
+                    onClick = { lazyAlbumItems.retry() }
+                )
             }
         }
-        lazyAlbumItems.loadState.refresh is LoadState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                LoadingView(modifier = Modifier.fillMaxSize())
-            }
-        }
-        lazyAlbumItems.loadState.refresh is LoadState.Error -> {
-            val e = lazyAlbumItems.loadState.refresh as LoadState.Error
-
-            ErrorItem(
-                message = e.error.localizedMessage
-                    ?: stringResource(id = R.string.search),
-                modifier = Modifier.fillMaxSize(),
-                onClick = { lazyAlbumItems.retry() }
-            )
-        }
-        lazyAlbumItems.loadState.append is LoadState.Error -> {
-            val e = lazyAlbumItems.loadState.append as LoadState.Error
-
-            ErrorItem(
-                message = e.error.localizedMessage
-                    ?: stringResource(id = R.string.search),
-                onClick = { lazyAlbumItems.retry() }
-            )
-        }
-    }
     }
 }
 
