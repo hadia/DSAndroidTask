@@ -1,3 +1,4 @@
+# DSAndroidTask
 <div id="top"></div>
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -31,8 +32,10 @@ The Android Task is built as a music app
 * A pagination feed (2 column grid)populated by this mock API
 * Include the ability to search.
 * While fetching new content, the search bar should show a circular activity indicator.
-  Use the appropriate debounce when receiving text
+* Use the appropriate debounce when receiving text
 
+Demo
+[Loom Record for demo](<https://www.loom.com/share/9500189be2d842efa5e69801d47c8708>)
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -40,8 +43,6 @@ The Android Task is built as a music app
 
 
 ### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 * [Kotlin]
 * [Jetpack Compose]
@@ -54,18 +55,6 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [Glide]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-[Loom Record for demo](<https://www.loom.com/share/9500189be2d842efa5e69801d47c8708>)
-https://www.loom.com/share/9500189be2d842efa5e69801d47c8708
-### Prerequisites
-Using android studio
 
 ### Installation
 
