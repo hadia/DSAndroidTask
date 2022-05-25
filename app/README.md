@@ -26,13 +26,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The Choco app is built to help user to order products 
+The Android Task is built as a music app
 
-* The user login to app and start session till explicitly logs out which clean all user data and redirect the user to the login screen
-* The user can see a list of products where multiple products can be selected to create an order.
-* After selecting the products the user should be able to click on a button to create the order.
-* The created orders saved locally on room database.
-* User can navigate to check order history and open orders details
+* A pagination feed (2 column grid)populated by this mock API
+* Include the ability to search.
+* While fetching new content, the search bar should show a circular activity indicator.
+  Use the appropriate debounce when receiving text
 
 
 
@@ -63,8 +62,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-[Loom Record for demo](<https://www.loom.com/share/374407e8890a4b94ad08c3c6c419de4c/>)
-https://www.loom.com/share/374407e8890a4b94ad08c3c6c419de4c
+[Loom Record for demo](<https://www.loom.com/share/9500189be2d842efa5e69801d47c8708>)
+https://www.loom.com/share/9500189be2d842efa5e69801d47c8708
 ### Prerequisites
 Using android studio
 
