@@ -34,6 +34,8 @@ The Android Task is built as a music app
 * While fetching new content, the search bar should show a circular activity indicator.
 * Use the appropriate debounce when receiving text
 
+Demo
+[Loom Record for demo](<https://www.loom.com/share/9500189be2d842efa5e69801d47c8708>)
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
